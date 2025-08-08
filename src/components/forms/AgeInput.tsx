@@ -44,15 +44,6 @@ export default function AgeInput({
         }
     };
 
-    // 预设年龄段快速选择
-    const ageRanges = [
-        { label: '儿童 (3-12岁)', value: 8 },
-        { label: '青少年 (13-17岁)', value: 15 },
-        { label: '青年 (18-35岁)', value: 25 },
-        { label: '中年 (36-55岁)', value: 45 },
-        { label: '老年 (56岁以上)', value: 65 }
-    ];
-
     return (
         <div className={className}>
             {/* 数字输入框 */}
@@ -80,31 +71,6 @@ export default function AgeInput({
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                         岁
                     </div>
-                </div>
-            </div>
-
-            {/* 快速选择年龄段 */}
-            <div>
-                <p className="text-sm text-gray-600 mb-3">或选择年龄段：</p>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {ageRanges.map((range) => (
-                        <button
-                            key={range.value}
-                            type="button"
-                            onClick={() => !disabled && onChange(range.value)}
-                            disabled={disabled}
-                            className={`
-                px-3 py-2 text-sm rounded-lg border transition-colors duration-200
-                ${value === range.value
-                                    ? 'border-pink-500 bg-pink-50 text-pink-700'
-                                    : 'border-gray-200 bg-white text-gray-600 hover:border-pink-300 hover:bg-pink-25'
-                                }
-                ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-              `}
-                        >
-                            {range.label}
-                        </button>
-                    ))}
                 </div>
             </div>
 

@@ -76,7 +76,7 @@ export default function GiftQuestionnaireForm({
     };
 
     return (
-        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl">
             <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
                     告诉我们收礼人的信息 🎯
@@ -93,7 +93,7 @@ export default function GiftQuestionnaireForm({
                 />
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in duration-500">
                 {/* 性别选择 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">

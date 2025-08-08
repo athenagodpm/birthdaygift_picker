@@ -18,10 +18,9 @@ export default function PastGifts({
     const [inputValue, setInputValue] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
 
-    // 过滤建议，排除已选择的礼物
+    // 过滤建议，保持所有建议可见，只根据输入内容过滤
     const filteredSuggestions = PAST_GIFT_SUGGESTIONS.filter(
         suggestion =>
-            !value.includes(suggestion) &&
             suggestion.toLowerCase().includes(inputValue.toLowerCase())
     );
 
@@ -69,14 +68,14 @@ export default function PastGifts({
                         {value.map((gift, index) => (
                             <div
                                 key={index}
-                                className="inline-flex items-center px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-sm"
+                                className="inline-flex items-center px-3 py-1.5 bg-purple-100 text-purple-800 rounded-full text-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
                             >
                                 <span>{gift}</span>
                                 {!disabled && (
                                     <button
                                         type="button"
                                         onClick={() => removeGift(gift)}
-                                        className="ml-2 p-0.5 hover:bg-purple-200 rounded-full transition-colors"
+                                        className="ml-2 p-0.5 hover:bg-purple-200 rounded-full transition-all duration-200 hover:scale-110"
                                     >
                                         <XMarkIcon className="w-3 h-3" />
                                     </button>
@@ -125,53 +124,60 @@ export default function PastGifts({
                 {/* 建议下拉列表 */}
                 {showSuggestions && filteredSuggestions.length > 0 && !disabled && (
                     <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                        {filteredSuggestions.slice(0, 8).map((suggestion, index) => (
-                            <button
-                                key={index}
-                                type="button"
-                                onClick={() => handleSuggestionClick(suggestion)}
-                                className="w-full px-4 py-2 text-left hover:bg-purple-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
-                            >
-                                {suggestion}
-                            </button>
-                        ))}
+                        {filteredSuggestions.slice(0, 8).map((suggestion, index) => {
+                            const isSelected = value.includes(suggestion);
+                            return (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    onClick={() => isSelected ? removeGift(suggestion) : handleSuggestionClick(suggestion)}
+                                    className={`
+                    w-full px-4 py-2 text-left transition-colors first:rounded-t-lg last:rounded-b-lg
+                    ${isSelected
+                                            ? 'bg-purple-50 text-purple-700 hover:bg-purple-100'
+                                            : 'hover:bg-purple-50'
+                                        }
+                  `}
+                                >
+                                    <span className="flex items-center justify-between">
+                                        <span>{suggestion}</span>
+                                        {isSelected && <span className="text-purple-500 text-sm">✓</span>}
+                                    </span>
+                                </button>
+                            );
+                        })}
                     </div>
                 )}
             </div>
 
             {/* 快速选择常见礼物 */}
-            {value.length === 0 && (
-                <div className="mt-4">
-                    <p className="text-sm text-gray-600 mb-3">常见礼物类型：</p>
-                    <div className="flex flex-wrap gap-2">
-                        {PAST_GIFT_SUGGESTIONS.slice(0, 10).map((suggestion, index) => (
+            <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-3">常见礼物类型：</p>
+                <div className="flex flex-wrap gap-2">
+                    {PAST_GIFT_SUGGESTIONS.slice(0, 10).map((suggestion, index) => {
+                        const isSelected = value.includes(suggestion);
+                        return (
                             <button
                                 key={index}
                                 type="button"
-                                onClick={() => !disabled && addGift(suggestion)}
+                                onClick={() => !disabled && (isSelected ? removeGift(suggestion) : addGift(suggestion))}
                                 disabled={disabled}
                                 className={`
-                  px-3 py-1.5 text-sm border rounded-full transition-colors
+                  px-3 py-1.5 text-sm border rounded-full transition-all duration-200
                   ${disabled
                                         ? 'border-gray-200 text-gray-400 cursor-not-allowed'
-                                        : 'border-gray-300 text-gray-600 hover:border-purple-300 hover:bg-purple-50 cursor-pointer'
+                                        : isSelected
+                                            ? 'border-purple-500 bg-purple-100 text-purple-700 hover:bg-purple-200'
+                                            : 'border-gray-300 text-gray-600 hover:border-purple-300 hover:bg-purple-50 cursor-pointer'
                                     }
                 `}
                             >
                                 {suggestion}
                             </button>
-                        ))}
-                    </div>
+                        );
+                    })}
                 </div>
-            )}
-
-            {/* 空状态提示 */}
-            {value.length === 0 && (
-                <div className="mt-4 text-center py-8 text-gray-500">
-                    <div className="text-4xl mb-2">🎁</div>
-                    <p className="text-sm">还没有添加过往礼物？没关系，跳过这一步也可以！</p>
-                </div>
-            )}
+            </div>
 
             {/* 提示信息 */}
             {value.length > 0 && (

@@ -21,9 +21,10 @@ export default function QuestionnairePage() {
             // 先尝试快速API，如果失败再用完整API
             let response: GiftResponse;
 
+            // 测试模式：优先使用智能模拟API
             try {
-                console.log('⚡ 尝试快速豆包服务...');
-                const fastDoubaoResponse = await fetch('/api/fast-doubao', {
+                console.log('🧪 测试模式：使用智能模拟API...');
+                const quickResponse = await fetch('/api/quick-gift', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -31,17 +32,17 @@ export default function QuestionnairePage() {
                     body: JSON.stringify(data),
                 });
 
-                if (fastDoubaoResponse.ok) {
-                    response = await fastDoubaoResponse.json();
-                    console.log('✅ 快速豆包成功:', response);
+                if (quickResponse.ok) {
+                    response = await quickResponse.json();
+                    console.log('✅ 智能模拟API成功:', response);
                 } else {
-                    throw new Error('快速豆包失败');
+                    throw new Error('智能模拟API失败');
                 }
-            } catch (fastDoubaoError) {
-                console.warn('⚠️ 快速豆包失败，尝试快速AI服务:', fastDoubaoError);
+            } catch (quickError) {
+                console.warn('⚠️ 智能模拟API失败，尝试快速豆包服务:', quickError);
 
                 try {
-                    const fastResponse = await fetch('/api/fast-gift', {
+                    const fastDoubaoResponse = await fetch('/api/fast-doubao', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -49,14 +50,14 @@ export default function QuestionnairePage() {
                         body: JSON.stringify(data),
                     });
 
-                    if (fastResponse.ok) {
-                        response = await fastResponse.json();
-                        console.log('✅ 快速AI成功:', response);
+                    if (fastDoubaoResponse.ok) {
+                        response = await fastDoubaoResponse.json();
+                        console.log('✅ 快速豆包成功:', response);
                     } else {
-                        throw new Error('快速AI失败');
+                        throw new Error('快速豆包失败');
                     }
-                } catch (fastError) {
-                    console.warn('⚠️ 快速AI失败，尝试智能模拟API:', fastError);
+                } catch (fastDoubaoError) {
+                    console.warn('⚠️ 快速豆包失败，尝试快速AI服务:', fastDoubaoError);
 
                     const quickResponse = await fetch('/api/quick-gift', {
                         method: 'POST',

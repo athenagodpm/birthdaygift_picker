@@ -18,10 +18,9 @@ export default function InterestTags({
     const [inputValue, setInputValue] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
 
-    // 过滤建议，排除已选择的兴趣
+    // 过滤建议，保持所有建议可见，只根据输入内容过滤
     const filteredSuggestions = INTEREST_SUGGESTIONS.filter(
         suggestion =>
-            !value.includes(suggestion) &&
             suggestion.toLowerCase().includes(inputValue.toLowerCase())
     );
 
@@ -62,14 +61,14 @@ export default function InterestTags({
                         {value.map((interest, index) => (
                             <div
                                 key={index}
-                                className="inline-flex items-center px-3 py-1.5 bg-pink-100 text-pink-800 rounded-full text-sm"
+                                className="inline-flex items-center px-3 py-1.5 bg-pink-100 text-pink-800 rounded-full text-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
                             >
                                 <span>{interest}</span>
                                 {!disabled && (
                                     <button
                                         type="button"
                                         onClick={() => removeInterest(interest)}
-                                        className="ml-2 p-0.5 hover:bg-pink-200 rounded-full transition-colors"
+                                        className="ml-2 p-0.5 hover:bg-pink-200 rounded-full transition-all duration-200 hover:scale-110"
                                     >
                                         <XMarkIcon className="w-3 h-3" />
                                     </button>
@@ -118,45 +117,60 @@ export default function InterestTags({
                 {/* 建议下拉列表 */}
                 {showSuggestions && filteredSuggestions.length > 0 && !disabled && (
                     <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
-                        {filteredSuggestions.slice(0, 8).map((suggestion, index) => (
-                            <button
-                                key={index}
-                                type="button"
-                                onClick={() => handleSuggestionClick(suggestion)}
-                                className="w-full px-4 py-2 text-left hover:bg-pink-50 transition-colors first:rounded-t-lg last:rounded-b-lg"
-                            >
-                                {suggestion}
-                            </button>
-                        ))}
+                        {filteredSuggestions.slice(0, 8).map((suggestion, index) => {
+                            const isSelected = value.includes(suggestion);
+                            return (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    onClick={() => isSelected ? removeInterest(suggestion) : handleSuggestionClick(suggestion)}
+                                    className={`
+                    w-full px-4 py-2 text-left transition-colors first:rounded-t-lg last:rounded-b-lg
+                    ${isSelected
+                                            ? 'bg-pink-50 text-pink-700 hover:bg-pink-100'
+                                            : 'hover:bg-pink-50'
+                                        }
+                  `}
+                                >
+                                    <span className="flex items-center justify-between">
+                                        <span>{suggestion}</span>
+                                        {isSelected && <span className="text-pink-500 text-sm">✓</span>}
+                                    </span>
+                                </button>
+                            );
+                        })}
                     </div>
                 )}
             </div>
 
             {/* 快速选择常见兴趣 */}
-            {value.length === 0 && (
-                <div className="mt-4">
-                    <p className="text-sm text-gray-600 mb-3">常见兴趣爱好：</p>
-                    <div className="flex flex-wrap gap-2">
-                        {INTEREST_SUGGESTIONS.slice(0, 12).map((suggestion, index) => (
+            <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-3">常见兴趣爱好：</p>
+                <div className="flex flex-wrap gap-2">
+                    {INTEREST_SUGGESTIONS.slice(0, 12).map((suggestion, index) => {
+                        const isSelected = value.includes(suggestion);
+                        return (
                             <button
                                 key={index}
                                 type="button"
-                                onClick={() => !disabled && addInterest(suggestion)}
+                                onClick={() => !disabled && (isSelected ? removeInterest(suggestion) : addInterest(suggestion))}
                                 disabled={disabled}
                                 className={`
-                  px-3 py-1.5 text-sm border rounded-full transition-colors
+                  px-3 py-1.5 text-sm border rounded-full transition-all duration-200
                   ${disabled
                                         ? 'border-gray-200 text-gray-400 cursor-not-allowed'
-                                        : 'border-gray-300 text-gray-600 hover:border-pink-300 hover:bg-pink-50 cursor-pointer'
+                                        : isSelected
+                                            ? 'border-pink-500 bg-pink-100 text-pink-700 hover:bg-pink-200'
+                                            : 'border-gray-300 text-gray-600 hover:border-pink-300 hover:bg-pink-50 cursor-pointer'
                                     }
                 `}
                             >
                                 {suggestion}
                             </button>
-                        ))}
-                    </div>
+                        );
+                    })}
                 </div>
-            )}
+            </div>
 
             {/* 提示信息 */}
             {value.length > 0 && value.length < 10 && (

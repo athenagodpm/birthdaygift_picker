@@ -37,6 +37,33 @@ export const MBTI_OPTIONS: MBTIOption[] = [
     { label: 'ESFP - 娱乐家', value: 'ESFP', description: '热情友好，喜欢帮助他人', traits: ['热情', '友好', '灵活', '善于交际'] }
 ];
 
+// MBTI 视觉配置 - 按照四个维度分色：绿(NF)，蓝(SJ)，黄(SP)，紫(NT)
+export const MBTI_VISUAL_CONFIG = {
+    // NT类型 - 紫色 (理性者)
+    'INTJ': { icon: '🧠', color: 'purple', theme: 'architect' },
+    'INTP': { icon: '🔬', color: 'purple', theme: 'thinker' },
+    'ENTJ': { icon: '👑', color: 'purple', theme: 'commander' },
+    'ENTP': { icon: '💡', color: 'purple', theme: 'debater' },
+
+    // NF类型 - 绿色 (理想者)
+    'INFJ': { icon: '🌟', color: 'green', theme: 'advocate' },
+    'INFP': { icon: '🎨', color: 'green', theme: 'mediator' },
+    'ENFJ': { icon: '🤝', color: 'green', theme: 'protagonist' },
+    'ENFP': { icon: '🎭', color: 'green', theme: 'campaigner' },
+
+    // SJ类型 - 蓝色 (守护者)
+    'ISTJ': { icon: '📋', color: 'blue', theme: 'logistician' },
+    'ISFJ': { icon: '🛡️', color: 'blue', theme: 'defender' },
+    'ESTJ': { icon: '⚖️', color: 'blue', theme: 'executive' },
+    'ESFJ': { icon: '🤗', color: 'blue', theme: 'consul' },
+
+    // SP类型 - 黄色 (艺术家)
+    'ISTP': { icon: '🔧', color: 'yellow', theme: 'virtuoso' },
+    'ISFP': { icon: '🌸', color: 'yellow', theme: 'adventurer' },
+    'ESTP': { icon: '⚡', color: 'yellow', theme: 'entrepreneur' },
+    'ESFP': { icon: '🎉', color: 'yellow', theme: 'entertainer' }
+};
+
 // 常见兴趣爱好建议
 export const INTEREST_SUGGESTIONS = [
     '阅读', '运动', '音乐', '电影', '旅行', '摄影', '绘画', '烹饪',
