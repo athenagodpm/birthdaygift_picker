@@ -178,7 +178,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
 
             // 按点分割键名，支持嵌套对象
             const keys = key.split('.');
-            let value = translations[language];
+            let value: unknown = translations[language];
 
             // 检查当前语言的翻译是否存在
             if (!value || Object.keys(value).length === 0) {
@@ -189,14 +189,14 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
 
             for (const k of keys) {
                 if (value && typeof value === 'object' && k in value) {
-                    value = value[k];
+                    value = (value as Record<string, unknown>)[k];
                 } else {
                     // 翻译缺失，尝试回退到中文
                     if (language !== 'zh' && translations.zh) {
-                        let fallbackValue = translations.zh;
+                        let fallbackValue: unknown = translations.zh;
                         for (const fallbackKey of keys) {
                             if (fallbackValue && typeof fallbackValue === 'object' && fallbackKey in fallbackValue) {
-                                fallbackValue = fallbackValue[fallbackKey];
+                                fallbackValue = (fallbackValue as Record<string, unknown>)[fallbackKey];
                             } else {
                                 fallbackValue = null;
                                 break;
@@ -285,7 +285,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
 
     // 开发模式下暴露调试功能到全局
     if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-        (window as Record<string, unknown>).debugTranslations = debugTranslations;
+        (window as unknown as Record<string, unknown>).debugTranslations = debugTranslations;
     }
 
     return (
