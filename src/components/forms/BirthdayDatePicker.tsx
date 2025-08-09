@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormFieldProps } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface BirthdayDatePickerProps extends FormFieldProps {
     value?: string; // 格式: MM-DD
@@ -13,22 +14,23 @@ export default function BirthdayDatePicker({
     disabled = false,
     className = ''
 }: BirthdayDatePickerProps) {
+    const { t } = useTranslation();
     const [month, setMonth] = useState(value ? value.split('-')[0] : '');
     const [day, setDay] = useState(value ? value.split('-')[1] : '');
 
     const months = [
-        { value: '01', label: '1月' },
-        { value: '02', label: '2月' },
-        { value: '03', label: '3月' },
-        { value: '04', label: '4月' },
-        { value: '05', label: '5月' },
-        { value: '06', label: '6月' },
-        { value: '07', label: '7月' },
-        { value: '08', label: '8月' },
-        { value: '09', label: '9月' },
-        { value: '10', label: '10月' },
-        { value: '11', label: '11月' },
-        { value: '12', label: '12月' }
+        { value: '01', label: t('questionnaire.birthday.months.1') },
+        { value: '02', label: t('questionnaire.birthday.months.2') },
+        { value: '03', label: t('questionnaire.birthday.months.3') },
+        { value: '04', label: t('questionnaire.birthday.months.4') },
+        { value: '05', label: t('questionnaire.birthday.months.5') },
+        { value: '06', label: t('questionnaire.birthday.months.6') },
+        { value: '07', label: t('questionnaire.birthday.months.7') },
+        { value: '08', label: t('questionnaire.birthday.months.8') },
+        { value: '09', label: t('questionnaire.birthday.months.9') },
+        { value: '10', label: t('questionnaire.birthday.months.10') },
+        { value: '11', label: t('questionnaire.birthday.months.11') },
+        { value: '12', label: t('questionnaire.birthday.months.12') }
     ];
 
     const getDaysInMonth = (monthValue: string) => {
@@ -61,10 +63,10 @@ export default function BirthdayDatePicker({
 
     const getSeasonGifts = (monthValue: string) => {
         const monthNum = parseInt(monthValue);
-        if (monthNum >= 3 && monthNum <= 5) return '春季适合：鲜花、春游用品、轻薄服饰';
-        if (monthNum >= 6 && monthNum <= 8) return '夏季适合：防晒用品、清凉饮品、户外装备';
-        if (monthNum >= 9 && monthNum <= 11) return '秋季适合：保温用品、秋装、温暖饰品';
-        return '冬季适合：保暖用品、热饮、室内娱乐';
+        if (monthNum >= 3 && monthNum <= 5) return t('questionnaire.birthday.seasons.spring');
+        if (monthNum >= 6 && monthNum <= 8) return t('questionnaire.birthday.seasons.summer');
+        if (monthNum >= 9 && monthNum <= 11) return t('questionnaire.birthday.seasons.autumn');
+        return t('questionnaire.birthday.seasons.winter');
     };
 
     return (
@@ -72,7 +74,7 @@ export default function BirthdayDatePicker({
             <div className="grid grid-cols-2 gap-4 mb-4">
                 {/* 月份选择 */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">月份</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('questionnaire.birthday.month')}</label>
                     <select
                         value={month}
                         onChange={(e) => handleMonthChange(e.target.value)}
@@ -87,7 +89,7 @@ export default function BirthdayDatePicker({
               focus:outline-none focus:ring-2 focus:ring-pink-200
             `}
                     >
-                        <option value="">选择月份</option>
+                        <option value="">{t('questionnaire.birthday.selectMonth')}</option>
                         {months.map((m) => (
                             <option key={m.value} value={m.value}>
                                 {m.label}
@@ -98,7 +100,7 @@ export default function BirthdayDatePicker({
 
                 {/* 日期选择 */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">日期</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('questionnaire.birthday.day')}</label>
                     <select
                         value={day}
                         onChange={(e) => handleDayChange(e.target.value)}
@@ -113,12 +115,12 @@ export default function BirthdayDatePicker({
               focus:outline-none focus:ring-2 focus:ring-pink-200
             `}
                     >
-                        <option value="">选择日期</option>
+                        <option value="">{t('questionnaire.birthday.selectDay')}</option>
                         {month && Array.from({ length: getDaysInMonth(month) }, (_, i) => {
                             const dayValue = String(i + 1).padStart(2, '0');
                             return (
                                 <option key={dayValue} value={dayValue}>
-                                    {i + 1}日
+                                    {i + 1}
                                 </option>
                             );
                         })}
@@ -132,7 +134,7 @@ export default function BirthdayDatePicker({
                     <div className="flex items-center space-x-2">
                         <span className="text-2xl">{getSeasonEmoji(month)}</span>
                         <div>
-                            <p className="text-sm font-medium text-blue-800">季节礼物建议</p>
+                            <p className="text-sm font-medium text-blue-800">{t('questionnaire.birthday.seasonHint')}</p>
                             <p className="text-xs text-blue-600">{getSeasonGifts(month)}</p>
                         </div>
                     </div>

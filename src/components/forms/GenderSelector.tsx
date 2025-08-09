@@ -1,6 +1,7 @@
 import React from 'react';
 import { GENDER_OPTIONS } from '@/constants';
 import { FormFieldProps } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface GenderSelectorProps extends FormFieldProps {
     value?: 'male' | 'female' | 'other';
@@ -14,6 +15,8 @@ export default function GenderSelector({
     disabled = false,
     className = ''
 }: GenderSelectorProps) {
+    const { t } = useTranslation();
+
     return (
         <div className={className}>
             <div className="grid grid-cols-3 gap-4">
@@ -36,7 +39,7 @@ export default function GenderSelector({
                             <div className="text-4xl mb-3">{option.icon}</div>
                             <div className={`font-semibold ${value === option.value ? 'text-pink-700' : 'text-gray-700'
                                 }`}>
-                                {option.label}
+                                {t(`questionnaire.gender.options.${option.value}`)}
                             </div>
                         </div>
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { PAST_GIFT_SUGGESTIONS } from '@/constants';
 import { FormFieldProps } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface PastGiftsProps extends FormFieldProps {
     value?: string[];
@@ -15,11 +16,28 @@ export default function PastGifts({
     disabled = false,
     className = ''
 }: PastGiftsProps) {
+    const { t, language } = useTranslation();
     const [inputValue, setInputValue] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
 
+    // 获取本地化的礼物建议
+    const getLocalizedGiftSuggestions = () => {
+        if (language === 'en') {
+            // 英文礼物建议
+            return [
+                'Flowers', 'Chocolate', 'Perfume', 'Watch', 'Necklace', 'Earrings',
+                'Handbag', 'Clothing', 'Shoes', 'Books', 'Electronics', 'Cosmetics',
+                'Skincare', 'Toys', 'Decorations', 'Stationery', 'Sports Equipment',
+                'Musical Instruments', 'Artwork', 'Food'
+            ];
+        }
+        return PAST_GIFT_SUGGESTIONS;
+    };
+
+    const localizedGiftSuggestions = getLocalizedGiftSuggestions();
+
     // 过滤建议，保持所有建议可见，只根据输入内容过滤
-    const filteredSuggestions = PAST_GIFT_SUGGESTIONS.filter(
+    const filteredSuggestions = localizedGiftSuggestions.filter(
         suggestion =>
             suggestion.toLowerCase().includes(inputValue.toLowerCase())
     );
@@ -57,7 +75,7 @@ export default function PastGifts({
             {/* 说明文字 */}
             <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <p className="text-sm text-yellow-800">
-                    💡 告诉我们您之前送过的礼物，我们会避免重复推荐，让每次送礼都有新意！
+                    {t('questionnaire.pastGifts.hint')}
                 </p>
             </div>
 
@@ -84,7 +102,7 @@ export default function PastGifts({
                         ))}
                     </div>
                     <p className="text-xs text-gray-500 mt-2">
-                        已添加 {value.length}/20 个礼物
+                        {t('questionnaire.pastGifts.added')} {value.length}{t('questionnaire.pastGifts.of')}20 {t('questionnaire.pastGifts.items')}
                     </p>
                 </div>
             )}
@@ -107,7 +125,7 @@ export default function PastGifts({
                         onFocus={() => setShowSuggestions(true)}
                         onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                         disabled={disabled || value.length >= 20}
-                        placeholder={value.length >= 20 ? "已达到最大数量" : "输入已送过的礼物，按回车添加"}
+                        placeholder={value.length >= 20 ? t('questionnaire.pastGifts.maxReached') : t('questionnaire.pastGifts.inputPlaceholder')}
                         className="flex-1 px-4 py-3 bg-transparent focus:outline-none disabled:cursor-not-allowed"
                     />
                     {inputValue && !disabled && (
@@ -152,9 +170,9 @@ export default function PastGifts({
 
             {/* 快速选择常见礼物 */}
             <div className="mt-4">
-                <p className="text-sm text-gray-600 mb-3">常见礼物类型：</p>
+                <p className="text-sm text-gray-600 mb-3">{t('questionnaire.pastGifts.common')}</p>
                 <div className="flex flex-wrap gap-2">
-                    {PAST_GIFT_SUGGESTIONS.slice(0, 10).map((suggestion, index) => {
+                    {localizedGiftSuggestions.slice(0, 10).map((suggestion, index) => {
                         const isSelected = value.includes(suggestion);
                         return (
                             <button
@@ -182,7 +200,7 @@ export default function PastGifts({
             {/* 提示信息 */}
             {value.length > 0 && (
                 <p className="text-sm text-gray-500 mt-2">
-                    ✨ 很好！我们会避免推荐这些类型的礼物，为您提供更多新颖的选择
+                    {t('questionnaire.pastGifts.successHint')}
                 </p>
             )}
 

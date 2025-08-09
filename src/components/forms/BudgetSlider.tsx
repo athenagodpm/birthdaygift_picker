@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BUDGET_OPTIONS } from '@/constants';
 import { FormFieldProps } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface BudgetSliderProps extends FormFieldProps {
     value?: string;
@@ -14,8 +15,37 @@ export default function BudgetSlider({
     disabled = false,
     className = ''
 }: BudgetSliderProps) {
+    const { t } = useTranslation();
     const [customBudget, setCustomBudget] = useState({ min: '', max: '' });
     const [showCustomInput, setShowCustomInput] = useState(false);
+
+    // 获取本地化的预算标签
+    const getBudgetLabel = (option: typeof BUDGET_OPTIONS[0]) => {
+        const key = option.value.replace('元', '').replace('以下', '').replace('以上', '+').replace('-', '-');
+        if (option.min === 0) return t('questionnaire.budget.options.0-50');
+        if (option.max === 100) return t('questionnaire.budget.options.50-100');
+        if (option.max === 200) return t('questionnaire.budget.options.100-200');
+        if (option.max === 500) return t('questionnaire.budget.options.200-500');
+        if (option.max === 1000) return t('questionnaire.budget.options.500-1000');
+        return t('questionnaire.budget.options.1000+');
+    };
+
+    // 获取预算描述
+    const getBudgetDescription = (option: typeof BUDGET_OPTIONS[0]) => {
+        if (option.min === 0) return t('questionnaire.budget.descriptions.affordable');
+        if (option.max <= 200) return t('questionnaire.budget.descriptions.valueForMoney');
+        if (option.max <= 500) return t('questionnaire.budget.descriptions.quality');
+        if (option.max <= 1000) return t('questionnaire.budget.descriptions.premium');
+        return t('questionnaire.budget.descriptions.luxury');
+    };
+
+    // 获取推荐类型
+    const getRecommendationType = (option: typeof BUDGET_OPTIONS[0]) => {
+        if (option.max <= 100) return t('questionnaire.budget.recommendations.practical');
+        if (option.max <= 300) return t('questionnaire.budget.recommendations.memorable');
+        if (option.max <= 500) return t('questionnaire.budget.recommendations.quality');
+        return t('questionnaire.budget.recommendations.premium');
+    };
 
     const handlePresetSelect = (budgetValue: string) => {
         onChange(budgetValue);
@@ -27,7 +57,7 @@ export default function BudgetSlider({
         const max = parseInt(customBudget.max);
 
         if (min && max && min < max) {
-            const customValue = `${min}-${max}元`;
+            const customValue = `${min}-${max}${t('questionnaire.budget.currency')}`;
             onChange(customValue);
             setShowCustomInput(false);
             setCustomBudget({ min: '', max: '' });
@@ -62,13 +92,10 @@ export default function BudgetSlider({
                     >
                         <div className={`font-semibold ${value === option.value ? 'text-pink-700' : 'text-gray-700'
                             }`}>
-                            {option.label}
+                            {getBudgetLabel(option)}
                         </div>
                         <div className="text-sm text-gray-500 mt-1">
-                            {option.min === 0 ? '经济实惠' :
-                                option.max <= 200 ? '性价比高' :
-                                    option.max <= 500 ? '品质之选' :
-                                        option.max <= 1000 ? '精品推荐' : '奢华礼品'}
+                            {getBudgetDescription(option)}
                         </div>
                     </button>
                 ))}
@@ -89,18 +116,18 @@ export default function BudgetSlider({
                             }
             `}
                     >
-                        + 自定义预算范围
+                        + {t('questionnaire.budget.custom')}
                     </button>
                 ) : (
                     <div className="space-y-3">
-                        <p className="text-sm font-medium text-gray-700">自定义预算范围：</p>
+                        <p className="text-sm font-medium text-gray-700">{t('questionnaire.budget.custom')}：</p>
                         <div className="flex items-center space-x-3">
                             <div className="flex-1">
                                 <input
                                     type="number"
                                     value={customBudget.min}
                                     onChange={(e) => setCustomBudget(prev => ({ ...prev, min: e.target.value }))}
-                                    placeholder="最低金额"
+                                    placeholder={t('questionnaire.budget.customMin')}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none"
                                     disabled={disabled}
                                 />
@@ -111,12 +138,12 @@ export default function BudgetSlider({
                                     type="number"
                                     value={customBudget.max}
                                     onChange={(e) => setCustomBudget(prev => ({ ...prev, max: e.target.value }))}
-                                    placeholder="最高金额"
+                                    placeholder={t('questionnaire.budget.customMax')}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-pink-500 focus:outline-none"
                                     disabled={disabled}
                                 />
                             </div>
-                            <span className="text-gray-500">元</span>
+                            <span className="text-gray-500">{t('questionnaire.budget.currency')}</span>
                         </div>
                         <div className="flex space-x-2">
                             <button
@@ -125,7 +152,7 @@ export default function BudgetSlider({
                                 disabled={disabled || !customBudget.min || !customBudget.max}
                                 className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                确定
+                                {t('questionnaire.budget.confirm')}
                             </button>
                             <button
                                 type="button"
@@ -136,7 +163,7 @@ export default function BudgetSlider({
                                 disabled={disabled}
                                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                             >
-                                取消
+                                {t('questionnaire.budget.cancel')}
                             </button>
                         </div>
                     </div>
@@ -148,14 +175,9 @@ export default function BudgetSlider({
                 <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="font-medium text-blue-800">已选择预算：{selectedInfo.label}</p>
+                            <p className="font-medium text-blue-800">{t('questionnaire.budget.selected')}{getBudgetLabel(selectedInfo)}</p>
                             <p className="text-sm text-blue-600 mt-1">
-                                💰 在这个价位，我们会为您推荐{
-                                    selectedInfo.max <= 100 ? '实用性强的小礼品' :
-                                        selectedInfo.max <= 300 ? '有纪念意义的精美礼品' :
-                                            selectedInfo.max <= 500 ? '品质优良的特色礼品' :
-                                                '高端精品或定制化礼品'
-                                }
+                                {t('questionnaire.budget.budgetHint')}{getRecommendationType(selectedInfo)}
                             </p>
                         </div>
                         {!disabled && (
@@ -164,7 +186,7 @@ export default function BudgetSlider({
                                 onClick={() => onChange('')}
                                 className="text-blue-600 hover:text-blue-800 text-sm underline"
                             >
-                                重新选择
+                                {t('questionnaire.budget.reselect')}
                             </button>
                         )}
                     </div>

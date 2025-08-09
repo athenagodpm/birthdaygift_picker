@@ -1,6 +1,7 @@
 import React from 'react';
 import { MBTI_OPTIONS } from '@/constants';
 import { FormFieldProps } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 import MBTICard from './MBTICard';
 
 interface MBTISelectorProps extends FormFieldProps {
@@ -15,6 +16,8 @@ export default function MBTISelector({
     disabled = false,
     className = ''
 }: MBTISelectorProps) {
+    const { t } = useTranslation();
+
     const handleSelect = (mbtiValue: string) => {
         // 如果点击的是已选中的项，则取消选择
         if (value === mbtiValue) {
@@ -35,6 +38,7 @@ export default function MBTISelector({
                         isSelected={value === option.value}
                         onClick={() => handleSelect(option.value)}
                         disabled={disabled}
+                        description={t(`questionnaire.mbti.types.${option.value}`)}
                     />
                 ))}
             </div>
@@ -42,7 +46,7 @@ export default function MBTISelector({
             {/* 简化的提示 */}
             <div className="text-center">
                 <p className="text-xs text-gray-500">
-                    💡 不确定MBTI类型可跳过此选项
+                    {t('questionnaire.mbtiHint')}
                     {value && (
                         <button
                             type="button"
@@ -50,7 +54,7 @@ export default function MBTISelector({
                             disabled={disabled}
                             className="ml-2 text-purple-500 hover:text-purple-700 underline"
                         >
-                            清除选择
+                            {t('questionnaire.clearSelection')}
                         </button>
                     )}
                 </p>

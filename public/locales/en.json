@@ -1,0 +1,223 @@
+﻿{
+    "common": {
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "confirm": "Confirm",
+        "back": "Back",
+        "next": "Next"
+    },
+    "home": {
+        "title": "What Birthday Gift to Give?",
+        "subtitle": "Recommend the most thoughtful birthday gifts for you",
+        "cta": "Start Choosing Gifts ✨",
+        "footer": "Solve your \"gift anxiety\" and make every gift full of heart 💝",
+        "features": {
+            "questionnaire": {
+                "title": "Simple Survey",
+                "description": "Understand recipient's preferences"
+            },
+            "analysis": {
+                "title": "Smart Analysis",
+                "description": "Precise matching recommendations"
+            },
+            "recommendation": {
+                "title": "Thoughtful Suggestions",
+                "description": "Personalized blessings"
+            }
+        },
+        "description": "Just a few minutes, tell us about the recipient's basic information and interests"
+    },
+    "questionnaire": {
+        "title": "Tell Us About the Gift Recipient",
+        "description": "A few simple questions to help you find the most thoughtful gift",
+        "required": "Required",
+        "optional": "Optional",
+        "analyzing": "AI is analyzing...",
+        "getRecommendations": "Get Gift Recommendations 🎁",
+        "gender": {
+            "label": "Recipient's Gender",
+            "options": {
+                "male": "Male",
+                "female": "Female",
+                "other": "Other"
+            }
+        },
+        "age": {
+            "label": "Recipient's Age",
+            "placeholder": "Please enter age",
+            "unit": "years old",
+            "hints": {
+                "child": "🧒 Recommend safe, educational gifts for children",
+                "teen": "🧑‍🎓 Recommend trendy, tech gifts for teenagers",
+                "young": "👨‍💼 Recommend practical, personalized gifts for young adults",
+                "middle": "👨‍💼 Recommend quality, health-focused gifts for middle-aged",
+                "senior": "👴 Recommend health, comfort gifts for seniors"
+            }
+        },
+        "interests": {
+            "label": "Interests & Hobbies",
+            "placeholder": "Please select or enter interests",
+            "inputPlaceholder": "Enter interests, press Enter to add",
+            "maxReached": "Maximum reached",
+            "selected": "Selected",
+            "of": "/",
+            "items": "interests",
+            "common": "Common Interests:",
+            "addMoreHint": "💡 Add more interests for more accurate recommendations"
+        },
+        "mbti": {
+            "label": "MBTI Personality Type",
+            "types": {
+                "INTJ": "Architect - Imaginative and strategic thinkers",
+                "INTP": "Thinker - Innovative inventors with unquenchable thirst for knowledge",
+                "ENTJ": "Commander - Bold, imaginative and strong-willed leaders",
+                "ENTP": "Debater - Smart and curious thinkers who cannot resist an intellectual challenge",
+                "INFJ": "Advocate - Quiet and mystical, yet very inspiring and tireless idealists",
+                "INFP": "Mediator - Poetic, kind and altruistic people, always eager to help a good cause",
+                "ENFJ": "Protagonist - Charismatic and inspiring leaders, able to mesmerize their listeners",
+                "ENFP": "Campaigner - Enthusiastic, creative and sociable free spirits",
+                "ISTJ": "Logistician - Practical and fact-minded, reliable and responsible",
+                "ISFJ": "Defender - Very dedicated and warm protectors, always ready to defend their loved ones",
+                "ESTJ": "Executive - Excellent administrators, unsurpassed at managing things or people",
+                "ESFJ": "Consul - Extraordinarily caring, social and popular people, always eager to help",
+                "ISTP": "Virtuoso - Bold and practical experimenters, masters of all kinds of tools",
+                "ISFP": "Adventurer - Flexible and charming artists, always ready to explore new possibilities",
+                "ESTP": "Entrepreneur - Smart, energetic and very perceptive people, truly enjoy living on the edge",
+                "ESFP": "Entertainer - Spontaneous, energetic and enthusiastic people - life is never boring around them"
+            }
+        },
+        "budget": {
+            "label": "Budget Range",
+            "low": "Budget-friendly",
+            "medium": "Mid-range",
+            "high": "No budget limit",
+            "custom": "Custom Budget Range",
+            "customMin": "Minimum Amount",
+            "customMax": "Maximum Amount",
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "reselect": "Reselect",
+            "selected": "Selected Budget: ",
+            "options": {
+                "0-50": "$0-50",
+                "50-100": "$50-100",
+                "100-200": "$100-200",
+                "200-500": "$200-500",
+                "500-1000": "$500-1000",
+                "1000+": "$1000+"
+            },
+            "descriptions": {
+                "affordable": "Affordable",
+                "valueForMoney": "Great Value",
+                "quality": "Quality Choice",
+                "premium": "Premium Selection",
+                "luxury": "Luxury Gifts"
+            },
+            "recommendations": {
+                "practical": "practical small gifts",
+                "memorable": "memorable fine gifts",
+                "quality": "quality specialty gifts",
+                "premium": "premium or customized gifts"
+            },
+            "currency": "$",
+            "budgetHint": "💰 At this price range, we'll recommend"
+        },
+        "pastGifts": {
+            "label": "Gifts Given Before",
+            "placeholder": "Please enter gifts given before",
+            "inputPlaceholder": "Enter past gifts, press Enter to add",
+            "maxReached": "Maximum reached",
+            "added": "Added",
+            "of": "/",
+            "items": "gifts",
+            "common": "Common Gift Types:",
+            "hint": "💡 Tell us about gifts you've given before, we'll avoid duplicates and suggest fresh ideas!",
+            "successHint": "✨ Great! We'll avoid recommending these types and provide more novel choices"
+        },
+        "birthday": {
+            "label": "Birthday Date",
+            "month": "Month",
+            "day": "Day",
+            "selectMonth": "Select Month",
+            "selectDay": "Select Day",
+            "seasonHint": "Seasonal Gift Suggestions",
+            "seasons": {
+                "spring": "Spring: Flowers, outdoor gear, light clothing",
+                "summer": "Summer: Sunscreen, cool drinks, outdoor equipment",
+                "autumn": "Autumn: Warm items, fall fashion, cozy accessories",
+                "winter": "Winter: Warm items, hot drinks, indoor entertainment"
+            },
+            "months": {
+                "1": "January",
+                "2": "February",
+                "3": "March",
+                "4": "April",
+                "5": "May",
+                "6": "June",
+                "7": "July",
+                "8": "August",
+                "9": "September",
+                "10": "October",
+                "11": "November",
+                "12": "December"
+            }
+        },
+        "submit": "Get Recommendations",
+        "mbtiHint": "💡 Skip this option if you're unsure about MBTI type",
+        "clearSelection": "Clear Selection"
+    },
+    "results": {
+        "title": "Gift Recommendation Results",
+        "loading": "Loading recommendation results...",
+        "error": "No recommendation results found",
+        "noResults": "No recommendations available",
+        "backToQuestionnaire": "Retake Survey",
+        "backToHome": "Back to Home",
+        "startOver": "Start Over",
+        "newRecommendation": "🔄 New Recommendation",
+        "forOthers": "✨ Recommend for Others",
+        "genderMale": "male",
+        "genderFemale": "female",
+        "genderOther": "",
+        "forAge": "Gift recommendations for {{age}}-year-old {{gender}}",
+        "recommendationTitle": "Curated Gift Recommendations for You ✨",
+        "recommendationSubtitle": "Based on the recipient's characteristics, we recommend these {{count}} thoughtful gifts",
+        "blessing": {
+            "title": "Personalized Birthday Blessing 💝",
+            "subtitle": "Add a warm blessing to this special gift",
+            "copy": "Copy Blessing",
+            "copied": "Copied",
+            "usage": "💌 You can write this blessing on a card or send it to the recipient"
+        },
+        "tip": {
+            "title": "Helpful Tip",
+            "content": "These recommendations are tailored based on the recipient's personal characteristics. You can adjust according to actual circumstances and personal preferences. The most important thing is your thoughtfulness! Remember to include a warm blessing with your gift~"
+        },
+        "footer": {
+            "main": "🎁 Hope these recommendations help you find the perfect birthday gift!",
+            "sub": "Remember, the best gift is your thoughtfulness 💝"
+        },
+        "card": {
+            "recommended": "Carefully Recommended"
+        }
+    },
+    "language": {
+        "switch": "Switch Language",
+        "chinese": "中文",
+        "english": "English"
+    },
+    "validation": {
+        "required": "This field is required",
+        "minValue": "Value cannot be less than {{min}}",
+        "maxValue": "Value cannot be greater than {{max}}",
+        "minLength": "At least {{min}} items required",
+        "maxLength": "Maximum {{max}} items allowed",
+        "invalidFormat": "Invalid format",
+        "validationFailed": "Validation failed"
+    }
+}

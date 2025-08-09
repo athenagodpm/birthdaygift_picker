@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GiftRequest, GiftResponse, ApiError } from '@/types';
+import { MultilingualPromptService, Language } from '@/services/multilingualPromptService';
 
 export async function POST(request: NextRequest) {
     try {
         console.log('🚀 Quick API called at:', new Date().toISOString());
 
         // 解析请求数据
-        let body: GiftRequest;
+        let body: GiftRequest & { language?: Language };
         try {
             body = await request.json();
             console.log('✅ Request body parsed successfully');
@@ -17,6 +18,9 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
+
+        // 获取语言参数，默认为中文
+        const language: Language = body.language || 'zh';
 
         // 基础验证
         if (!body.gender || !body.age || !body.interests || !body.budget) {
@@ -29,7 +33,7 @@ export async function POST(request: NextRequest) {
         console.log('✅ Basic validation passed');
 
         // 直接生成智能模拟响应
-        const response = generateIntelligentMockResponse(body);
+        const response = generateIntelligentMockResponse(body, language);
         console.log('✅ Intelligent mock response generated');
 
         return NextResponse.json(response);
@@ -44,7 +48,7 @@ export async function POST(request: NextRequest) {
 }
 
 // 智能模拟响应生成
-function generateIntelligentMockResponse(request: GiftRequest): GiftResponse {
+function generateIntelligentMockResponse(request: GiftRequest, language: Language = 'zh'): GiftResponse {
     const { gender, age, interests, budget, mbti, pastGifts = [] } = request;
 
     console.log('🎁 Generating intelligent mock response for:', {
@@ -53,8 +57,20 @@ function generateIntelligentMockResponse(request: GiftRequest): GiftResponse {
         interestsCount: interests.length,
         budget,
         mbti,
-        pastGiftsCount: pastGifts.length
+        pastGiftsCount: pastGifts.length,
+        language
     });
+
+    if (language === 'en') {
+        return generateEnglishMockResponse(request);
+    } else {
+        return generateChineseMockResponse(request);
+    }
+}
+
+// 生成中文模拟响应
+function generateChineseMockResponse(request: GiftRequest): GiftResponse {
+    const { gender, age, interests, budget, mbti, pastGifts = [] } = request;
 
     const genderText = gender === 'male' ? '男性' : gender === 'female' ? '女性' : '朋友';
     const ageGroup = age < 18 ? '青少年' : age < 30 ? '年轻人' : age < 50 ? '中年人' : '长者';
@@ -141,6 +157,108 @@ function generateIntelligentMockResponse(request: GiftRequest): GiftResponse {
         `✨ 在这个特别的日子里，愿所有的美好都围绕着TA，生日快乐！`,
         `🎉 ${age}岁的新篇章开始了，愿未来的每一天都比今天更精彩！`,
         `💝 最好的礼物是心意，最美的祝福是真诚，生日快乐！`
+    ];
+
+    const blessing = blessings[Math.floor(Math.random() * blessings.length)];
+
+    return {
+        recommendations: recommendations.slice(0, 3), // 确保只返回3个推荐
+        blessing
+    };
+}
+
+// 生成英文模拟响应
+function generateEnglishMockResponse(request: GiftRequest): GiftResponse {
+    const { gender, age, interests, budget, mbti, pastGifts = [] } = request;
+
+    const genderText = gender === 'male' ? 'male' : gender === 'female' ? 'female' : 'friend';
+    const ageGroup = age < 18 ? 'teenager' : age < 30 ? 'young adult' : age < 50 ? 'middle-aged person' : 'senior';
+
+    // 根据兴趣爱好生成个性化推荐
+    const recommendations: Array<{ giftName: string, reason: string, estimatedPrice: string }> = [];
+
+    // 第一个推荐：基于主要兴趣
+    const mainInterest = interests[0] || 'lifestyle';
+    const interestGifts: Record<string, string> = {
+        'Reading': 'Premium Classic Literature Set',
+        'Music': 'High-Quality Bluetooth Headphones',
+        'Sports': 'Professional Sports Equipment Set',
+        'Travel': 'Multi-functional Travel Backpack',
+        'Photography': 'Portable Tripod Set',
+        'Painting': 'Professional Art Supply Set',
+        'Cooking': 'Premium Kitchen Utensil Set',
+        'Gaming': 'Gaming Collectibles',
+        'Fitness': 'Smart Fitness Tracker',
+        'Yoga': 'Premium Yoga Mat Set',
+        'Dancing': 'Professional Dance Wear',
+        'Calligraphy': 'Master Calligraphy Set',
+        'Gardening': 'Elegant Garden Tool Set',
+        'Handicrafts': 'Premium Craft Material Kit',
+        'Collecting': 'Limited Edition Collectible',
+        'Pets': 'Smart Pet Accessories',
+        'Technology': 'Latest Tech Gadget',
+        'Fashion': 'Designer Brand Accessories',
+        'Beauty': 'Premium Cosmetics Set',
+        'Coffee': 'Professional Coffee Equipment Set',
+        'Tea': 'Premium Tea Set',
+        'Fishing': 'Professional Fishing Gear',
+        'Hiking': 'Outdoor Hiking Equipment'
+    };
+
+    // 转换预算格式
+    const budgetText = budget.replace('元', '').replace('-', '-$').replace(/^/, '$');
+
+    recommendations.push({
+        giftName: interestGifts[mainInterest] || `${mainInterest} Themed Custom Gift`,
+        reason: `Based on your mention of "${mainInterest}" interest, this gift perfectly matches the hobbies of this ${ageGroup} ${genderText}, being both practical and thoughtful.`,
+        estimatedPrice: budgetText
+    });
+
+    // 第二个推荐：基于MBTI性格
+    if (mbti) {
+        const mbtiGifts: Record<string, { name: string, reason: string }> = {
+            'INTJ': { name: 'Smart Planning Journal', reason: 'Perfect for the strategic architect personality' },
+            'INTP': { name: 'Science Experiment Kit', reason: 'Satisfies the thinker\'s curiosity and exploration' },
+            'ENTJ': { name: 'Premium Business Accessories', reason: 'Matches the commander\'s leadership style' },
+            'ENTP': { name: 'Creative DIY Kit', reason: 'Stimulates the debater\'s innovative thinking' },
+            'INFJ': { name: 'Art Creation Tools', reason: 'Suits the advocate\'s idealism and creativity' },
+            'INFP': { name: 'Personalized Custom Photo Album', reason: 'Reflects the mediator\'s personal values' },
+            'ENFJ': { name: 'Team Activity Games', reason: 'Perfect for the protagonist\'s inspiring nature' },
+            'ENFP': { name: 'Multi-functional Creative Tools', reason: 'Satisfies the campaigner\'s enthusiasm and creativity' },
+            'ISTJ': { name: 'High-Quality Practical Tools', reason: 'Matches the logistician\'s practical nature' },
+            'ISFJ': { name: 'Cozy Home Accessories', reason: 'Suits the defender\'s warm and caring personality' },
+            'ESTJ': { name: 'Professional Management Tools', reason: 'Reflects the executive\'s organizational skills' },
+            'ESFJ': { name: 'Social Gathering Supplies', reason: 'Perfect for the consul\'s cooperative nature' },
+            'ISTP': { name: 'Precision Hand Tools', reason: 'Satisfies the virtuoso\'s practical exploration needs' },
+            'ISFP': { name: 'Art Creation Materials', reason: 'Suits the adventurer\'s creativity and flexibility' },
+            'ESTP': { name: 'Outdoor Sports Equipment', reason: 'Matches the entrepreneur\'s energetic nature' },
+            'ESFP': { name: 'Social Entertainment Items', reason: 'Perfect for the entertainer\'s friendly personality' }
+        };
+
+        const mbtiGift = mbtiGifts[mbti];
+        if (mbtiGift) {
+            recommendations.push({
+                giftName: mbtiGift.name,
+                reason: `Based on the ${mbti} personality type, ${mbtiGift.reason}, this gift aligns well with their personality traits.`,
+                estimatedPrice: budgetText
+            });
+        }
+    }
+
+    // 第三个推荐：避开已送礼物，推荐新颖的
+    const avoidedGifts = pastGifts.length > 0 ? `Avoiding previously given gifts like ${pastGifts.slice(0, 2).join(', ')}, ` : '';
+    recommendations.push({
+        giftName: 'Customized Experience Voucher',
+        reason: `${avoidedGifts}this is a unique experiential gift that allows them to choose their preferred experience based on their interests, both novel and thoughtful.`,
+        estimatedPrice: budgetText
+    });
+
+    // 生成个性化祝福语
+    const blessings = [
+        `🎂 Happy birthday to this wonderful ${age}-year-old ${genderText}! May every day be as full of surprises and joy as your birthday!`,
+        `✨ On this special day, may all the beautiful things surround you. Happy birthday!`,
+        `🎉 A new chapter at ${age} begins! May every day ahead be more wonderful than today!`,
+        `💝 The best gift is thoughtfulness, the most beautiful blessing is sincerity. Happy birthday!`
     ];
 
     const blessing = blessings[Math.floor(Math.random() * blessings.length)];

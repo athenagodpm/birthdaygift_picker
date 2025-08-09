@@ -24,3 +24,48 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 多语言优化 */
+[lang="zh"] {
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  line-height: 1.6;
+}
+
+[lang="en"] {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* 语言切换动画 */
+.language-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.language-transition.switching {
+  opacity: 0.7;
+  transform: translateY(-2px);
+}
+
+/* 文本适配 */
+.text-adaptive {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+[lang="zh"] .text-adaptive {
+  word-break: break-all;
+}
+
+[lang="en"] .text-adaptive {
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* 按钮文本适配 */
+[lang="zh"] .btn-text {
+  letter-spacing: 0.05em;
+}
+
+[lang="en"] .btn-text {
+  letter-spacing: 0.025em;
+}

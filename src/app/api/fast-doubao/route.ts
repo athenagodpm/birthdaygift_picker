@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GiftRequest, GiftResponse, ApiError } from '@/types';
 import { FastDoubaoService } from '@/services/fastDoubaoService';
+import { Language } from '@/services/multilingualPromptService';
 
 export async function POST(request: NextRequest) {
     try {
         console.log('🚀 快速豆包API调用开始:', new Date().toISOString());
 
         // 解析请求数据
-        let body: GiftRequest;
+        let body: GiftRequest & { language?: Language };
         try {
             body = await request.json();
             console.log('✅ 请求数据解析成功');
@@ -18,6 +19,9 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
+
+        // 获取语言参数，默认为中文
+        const language: Language = body.language || 'zh';
 
         // 基础验证
         if (!body.gender || !body.age || !body.interests || !body.budget) {
@@ -30,7 +34,7 @@ export async function POST(request: NextRequest) {
         console.log('✅ 基础验证通过');
 
         // 使用快速豆包服务
-        const response = await FastDoubaoService.generateGiftRecommendations(body);
+        const response = await FastDoubaoService.generateGiftRecommendations(body, language);
         console.log('✅ 快速豆包服务成功');
 
         return NextResponse.json(response);

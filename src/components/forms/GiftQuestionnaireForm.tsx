@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { GiftRequest, FormState } from '@/types';
-import { validateGiftRequest } from '@/utils/validation';
+import { validateGiftRequestI18n } from '@/utils/validation';
+import { useTranslation } from '@/hooks/useTranslation';
 import Button from '@/components/ui/Button';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorMessage from '@/components/ui/ErrorMessage';
@@ -25,6 +26,7 @@ export default function GiftQuestionnaireForm({
     isLoading = false,
     error
 }: GiftQuestionnaireFormProps) {
+    const { t } = useTranslation();
     const [formState, setFormState] = useState<FormState>({
         data: {
             gender: undefined,
@@ -42,8 +44,19 @@ export default function GiftQuestionnaireForm({
     });
 
     const updateFormData = (field: keyof GiftRequest, value: unknown) => {
+        console.log(`🔄 updateFormData called: ${field} = ${JSON.stringify(value)}`);
+        console.log(`📊 Current formState.data:`, formState.data);
+
         const newData = { ...formState.data, [field]: value };
-        const validation = validateGiftRequest(newData);
+        console.log(`📦 New data after update:`, newData);
+
+        // 检查年龄是否意外改变
+        if (field !== 'age' && formState.data.age !== newData.age) {
+            console.error(`🚨 年龄意外改变! 字段: ${field}, 原年龄: ${formState.data.age}, 新年龄: ${newData.age}`);
+        }
+
+        const validation = validateGiftRequestI18n(newData, t);
+        console.log(`✅ Validation result:`, validation);
 
         setFormState(prev => ({
             ...prev,
@@ -56,7 +69,7 @@ export default function GiftQuestionnaireForm({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const validation = validateGiftRequest(formState.data);
+        const validation = validateGiftRequestI18n(formState.data, t);
         if (!validation.isValid) {
             setFormState(prev => ({
                 ...prev,
@@ -79,10 +92,10 @@ export default function GiftQuestionnaireForm({
         <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl">
             <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                    告诉我们收礼人的信息 🎯
+                    {t('questionnaire.title')} 🎯
                 </h2>
                 <p className="text-gray-600">
-                    几个简单问题，帮你找到最贴心的礼物
+                    {t('questionnaire.description')}
                 </p>
             </div>
 
@@ -97,7 +110,7 @@ export default function GiftQuestionnaireForm({
                 {/* 性别选择 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">
-                        收礼人性别 <span className="text-red-500">*</span>
+                        {t('questionnaire.gender.label')} <span className="text-red-500">*</span>
                     </label>
                     <GenderSelector
                         value={formState.data.gender}
@@ -110,7 +123,7 @@ export default function GiftQuestionnaireForm({
                 {/* 年龄输入 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">
-                        收礼人年龄 <span className="text-red-500">*</span>
+                        {t('questionnaire.age.label')} <span className="text-red-500">*</span>
                     </label>
                     <AgeInput
                         value={formState.data.age}
@@ -123,7 +136,7 @@ export default function GiftQuestionnaireForm({
                 {/* 生日日期 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">
-                        生日日期 <span className="text-gray-400">(可选)</span>
+                        {t('questionnaire.birthday.label')} <span className="text-gray-400">({t('questionnaire.optional')})</span>
                     </label>
                     <BirthdayDatePicker
                         value={formState.data.birthdayDate}
@@ -136,7 +149,7 @@ export default function GiftQuestionnaireForm({
                 {/* 兴趣爱好 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">
-                        兴趣爱好 <span className="text-red-500">*</span>
+                        {t('questionnaire.interests.label')} <span className="text-red-500">*</span>
                     </label>
                     <InterestTags
                         value={formState.data.interests}
@@ -149,7 +162,7 @@ export default function GiftQuestionnaireForm({
                 {/* MBTI性格类型 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">
-                        MBTI性格类型 <span className="text-gray-400">(可选)</span>
+                        {t('questionnaire.mbti.label')} <span className="text-gray-400">({t('questionnaire.optional')})</span>
                     </label>
                     <MBTISelector
                         value={formState.data.mbti}
@@ -162,7 +175,7 @@ export default function GiftQuestionnaireForm({
                 {/* 预算范围 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">
-                        预算范围 <span className="text-red-500">*</span>
+                        {t('questionnaire.budget.label')} <span className="text-red-500">*</span>
                     </label>
                     <BudgetSlider
                         value={formState.data.budget}
@@ -175,7 +188,7 @@ export default function GiftQuestionnaireForm({
                 {/* 已送礼物 */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-700 mb-4">
-                        已送过的礼物 <span className="text-gray-400">(可选)</span>
+                        {t('questionnaire.pastGifts.label')} <span className="text-gray-400">({t('questionnaire.optional')})</span>
                     </label>
                     <PastGifts
                         value={formState.data.pastGifts}
@@ -197,10 +210,10 @@ export default function GiftQuestionnaireForm({
                         {isLoading || formState.isSubmitting ? (
                             <div className="flex items-center justify-center">
                                 <LoadingSpinner size="sm" className="mr-2" />
-                                AI正在分析中...
+                                {t('questionnaire.analyzing')}
                             </div>
                         ) : (
-                            '获取礼物推荐 🎁'
+                            t('questionnaire.getRecommendations')
                         )}
                     </Button>
                 </div>

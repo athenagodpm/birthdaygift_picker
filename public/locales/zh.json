@@ -1,0 +1,223 @@
+﻿{
+    "common": {
+        "loading": "加载中...",
+        "error": "出错了",
+        "submit": "提交",
+        "cancel": "取消",
+        "save": "保存",
+        "delete": "删除",
+        "edit": "编辑",
+        "confirm": "确认",
+        "back": "返回",
+        "next": "下一步"
+    },
+    "home": {
+        "title": "生日礼物送什么？",
+        "subtitle": "为你推荐最贴心的生日礼物",
+        "cta": "开始选择礼物 ✨",
+        "footer": "解决你的\"送礼焦虑\"，让每一份礼物都充满心意 💝",
+        "features": {
+            "questionnaire": {
+                "title": "简单问卷",
+                "description": "了解收礼人喜好"
+            },
+            "analysis": {
+                "title": "智能分析",
+                "description": "精准匹配推荐"
+            },
+            "recommendation": {
+                "title": "贴心推荐",
+                "description": "专属祝福语"
+            }
+        },
+        "description": "只需几分钟，告诉我们收礼人的基本信息和兴趣爱好"
+    },
+    "questionnaire": {
+        "title": "告诉我们收礼人的信息",
+        "description": "几个简单问题，帮你找到最贴心的礼物",
+        "required": "必填",
+        "optional": "可选",
+        "analyzing": "AI正在分析中...",
+        "getRecommendations": "获取礼物推荐 🎁",
+        "gender": {
+            "label": "收礼人性别",
+            "options": {
+                "male": "男性",
+                "female": "女性",
+                "other": "其他"
+            }
+        },
+        "age": {
+            "label": "收礼人年龄",
+            "placeholder": "请输入年龄",
+            "unit": "岁",
+            "hints": {
+                "child": "🧒 为儿童推荐安全、教育性的礼物",
+                "teen": "🧑‍🎓 为青少年推荐时尚、科技类的礼物",
+                "young": "👨‍💼 为年轻人推荐实用、个性化的礼物",
+                "middle": "👨‍💼 为中年人推荐品质、健康类的礼物",
+                "senior": "👴 为长辈推荐健康、舒适类的礼物"
+            }
+        },
+        "interests": {
+            "label": "兴趣爱好",
+            "placeholder": "请选择或输入兴趣爱好",
+            "inputPlaceholder": "输入兴趣爱好，按回车添加",
+            "maxReached": "已达到最大数量",
+            "selected": "已选择",
+            "of": "/",
+            "items": "个兴趣爱好",
+            "common": "常见兴趣爱好：",
+            "addMoreHint": "💡 添加更多兴趣爱好可以获得更精准的推荐"
+        },
+        "mbti": {
+            "label": "MBTI性格类型",
+            "types": {
+                "INTJ": "建筑师 - 富有想象力和战略性的思想家",
+                "INTP": "思想家 - 具有创新精神的发明家",
+                "ENTJ": "指挥官 - 大胆、富有想象力的强势领导者",
+                "ENTP": "辩论家 - 聪明好奇的思想家",
+                "INFJ": "提倡者 - 安静而神秘的理想主义者",
+                "INFP": "调停者 - 诗意、善良的利他主义者",
+                "ENFJ": "主人公 - 富有魅力的鼓舞人心的领导者",
+                "ENFP": "竞选者 - 热情、有创造力的自由精神",
+                "ISTJ": "物流师 - 实用主义的事实导向者",
+                "ISFJ": "守护者 - 非常专注、温暖的守护者",
+                "ESTJ": "总经理 - 出色的管理者",
+                "ESFJ": "执政官 - 极有同情心、受欢迎的人",
+                "ISTP": "鉴赏家 - 大胆而实际的实验家",
+                "ISFP": "探险家 - 灵活、有魅力的艺术家",
+                "ESTP": "企业家 - 聪明、精力充沛的感知者",
+                "ESFP": "娱乐家 - 自发的、精力充沛的表演者"
+            }
+        },
+        "budget": {
+            "label": "预算范围",
+            "low": "经济实惠",
+            "medium": "中等价位",
+            "high": "不限预算",
+            "custom": "自定义预算范围",
+            "customMin": "最低金额",
+            "customMax": "最高金额",
+            "confirm": "确定",
+            "cancel": "取消",
+            "reselect": "重新选择",
+            "selected": "已选择预算：",
+            "options": {
+                "0-50": "0-50元",
+                "50-100": "50-100元",
+                "100-200": "100-200元",
+                "200-500": "200-500元",
+                "500-1000": "500-1000元",
+                "1000+": "1000元以上"
+            },
+            "descriptions": {
+                "affordable": "经济实惠",
+                "valueForMoney": "性价比高",
+                "quality": "品质之选",
+                "premium": "精品推荐",
+                "luxury": "奢华礼品"
+            },
+            "recommendations": {
+                "practical": "实用性强的小礼品",
+                "memorable": "有纪念意义的精美礼品",
+                "quality": "品质优良的特色礼品",
+                "premium": "高端精品或定制化礼品"
+            },
+            "currency": "元",
+            "budgetHint": "💰 在这个价位，我们会为您推荐"
+        },
+        "pastGifts": {
+            "label": "已送过的礼物",
+            "placeholder": "请输入之前送过的礼物",
+            "inputPlaceholder": "输入已送过的礼物，按回车添加",
+            "maxReached": "已达到最大数量",
+            "added": "已添加",
+            "of": "/",
+            "items": "个礼物",
+            "common": "常见礼物类型：",
+            "hint": "💡 告诉我们您之前送过的礼物，我们会避免重复推荐，让每次送礼都有新意！",
+            "successHint": "✨ 很好！我们会避免推荐这些类型的礼物，为您提供更多新颖的选择"
+        },
+        "birthday": {
+            "label": "生日日期",
+            "month": "月份",
+            "day": "日期",
+            "selectMonth": "选择月份",
+            "selectDay": "选择日期",
+            "seasonHint": "季节礼物建议",
+            "seasons": {
+                "spring": "春季适合：鲜花、春游用品、轻薄服饰",
+                "summer": "夏季适合：防晒用品、清凉饮品、户外装备",
+                "autumn": "秋季适合：保温用品、秋装、温暖饰品",
+                "winter": "冬季适合：保暖用品、热饮、室内娱乐"
+            },
+            "months": {
+                "1": "1月",
+                "2": "2月",
+                "3": "3月",
+                "4": "4月",
+                "5": "5月",
+                "6": "6月",
+                "7": "7月",
+                "8": "8月",
+                "9": "9月",
+                "10": "10月",
+                "11": "11月",
+                "12": "12月"
+            }
+        },
+        "submit": "获取推荐",
+        "mbtiHint": "💡 不确定MBTI类型可跳过此选项",
+        "clearSelection": "清除选择"
+    },
+    "results": {
+        "title": "礼物推荐结果",
+        "loading": "正在加载推荐结果...",
+        "error": "未找到推荐结果",
+        "noResults": "暂无推荐结果",
+        "backToQuestionnaire": "重新填写问卷",
+        "backToHome": "返回首页",
+        "startOver": "重新开始",
+        "newRecommendation": "🔄 重新推荐",
+        "forOthers": "✨ 为其他人推荐",
+        "genderMale": "男性",
+        "genderFemale": "女性",
+        "genderOther": "",
+        "forAge": "为{{age}}岁{{gender}}的礼物推荐",
+        "recommendationTitle": "为你精选的礼物推荐 ✨",
+        "recommendationSubtitle": "基于收礼人的特点，我们为你推荐以下{{count}}个贴心礼物",
+        "blessing": {
+            "title": "专属生日祝福语 💝",
+            "subtitle": "为这份特别的礼物配上温馨的祝福",
+            "copy": "复制祝福语",
+            "copied": "已复制",
+            "usage": "💌 你可以将这句祝福语写在贺卡上，或者发送给收礼人"
+        },
+        "tip": {
+            "title": "贴心提示",
+            "content": "这些推荐都是基于收礼人的个人特点量身定制的。你可以根据实际情况和个人喜好进行调整，最重要的是心意！记得在礼物上附上温馨的祝福语哦～"
+        },
+        "footer": {
+            "main": "🎁 希望这些推荐能帮你找到完美的生日礼物！",
+            "sub": "记住，最好的礼物是你的心意 💝"
+        },
+        "card": {
+            "recommended": "精心推荐"
+        }
+    },
+    "language": {
+        "switch": "切换语言",
+        "chinese": "中文",
+        "english": "English"
+    },
+    "validation": {
+        "required": "此字段为必填项",
+        "minValue": "值不能小于 {{min}}",
+        "maxValue": "值不能大于 {{max}}",
+        "minLength": "至少需要 {{min}} 个项目",
+        "maxLength": "最多只能有 {{max}} 个项目",
+        "invalidFormat": "格式不正确",
+        "validationFailed": "验证失败"
+    }
+}

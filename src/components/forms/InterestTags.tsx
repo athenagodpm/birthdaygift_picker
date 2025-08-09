@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { INTEREST_SUGGESTIONS } from '@/constants';
 import { FormFieldProps } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface InterestTagsProps extends FormFieldProps {
     value?: string[];
@@ -15,11 +16,29 @@ export default function InterestTags({
     disabled = false,
     className = ''
 }: InterestTagsProps) {
+    const { t, language } = useTranslation();
     const [inputValue, setInputValue] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
 
+    // 获取本地化的兴趣建议
+    const getLocalizedSuggestions = () => {
+        if (language === 'en') {
+            // 英文兴趣建议
+            return [
+                'Reading', 'Sports', 'Music', 'Movies', 'Travel', 'Photography',
+                'Painting', 'Cooking', 'Gaming', 'Fitness', 'Yoga', 'Dancing',
+                'Calligraphy', 'Gardening', 'Handicrafts', 'Collecting', 'Pets',
+                'Technology', 'Fashion', 'Beauty', 'Coffee', 'Tea', 'Fishing', 'Hiking'
+            ];
+        }
+        // 对于中文，使用原始的中文建议
+        return INTEREST_SUGGESTIONS;
+    };
+
+    const localizedSuggestions = getLocalizedSuggestions();
+
     // 过滤建议，保持所有建议可见，只根据输入内容过滤
-    const filteredSuggestions = INTEREST_SUGGESTIONS.filter(
+    const filteredSuggestions = localizedSuggestions.filter(
         suggestion =>
             suggestion.toLowerCase().includes(inputValue.toLowerCase())
     );
@@ -77,7 +96,7 @@ export default function InterestTags({
                         ))}
                     </div>
                     <p className="text-xs text-gray-500 mt-2">
-                        已选择 {value.length}/10 个兴趣爱好
+                        {t('questionnaire.interests.selected')} {value.length}{t('questionnaire.interests.of')}10 {t('questionnaire.interests.items')}
                     </p>
                 </div>
             )}
@@ -100,7 +119,7 @@ export default function InterestTags({
                         onFocus={() => setShowSuggestions(true)}
                         onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                         disabled={disabled || value.length >= 10}
-                        placeholder={value.length >= 10 ? "已达到最大数量" : "输入兴趣爱好，按回车添加"}
+                        placeholder={value.length >= 10 ? t('questionnaire.interests.maxReached') : t('questionnaire.interests.inputPlaceholder')}
                         className="flex-1 px-4 py-3 bg-transparent focus:outline-none disabled:cursor-not-allowed"
                     />
                     {inputValue && !disabled && (
@@ -145,9 +164,9 @@ export default function InterestTags({
 
             {/* 快速选择常见兴趣 */}
             <div className="mt-4">
-                <p className="text-sm text-gray-600 mb-3">常见兴趣爱好：</p>
+                <p className="text-sm text-gray-600 mb-3">{t('questionnaire.interests.common')}</p>
                 <div className="flex flex-wrap gap-2">
-                    {INTEREST_SUGGESTIONS.slice(0, 12).map((suggestion, index) => {
+                    {localizedSuggestions.slice(0, 12).map((suggestion, index) => {
                         const isSelected = value.includes(suggestion);
                         return (
                             <button
@@ -175,7 +194,7 @@ export default function InterestTags({
             {/* 提示信息 */}
             {value.length > 0 && value.length < 10 && (
                 <p className="text-sm text-gray-500 mt-2">
-                    💡 添加更多兴趣爱好可以获得更精准的推荐
+                    {t('questionnaire.interests.addMoreHint')}
                 </p>
             )}
 

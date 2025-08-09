@@ -1,5 +1,6 @@
 import React from 'react';
 import { GiftRecommendation } from '@/types';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface RecommendationCardProps {
     recommendation: GiftRecommendation;
@@ -7,6 +8,7 @@ interface RecommendationCardProps {
 }
 
 export default function RecommendationCard({ recommendation, index }: RecommendationCardProps) {
+    const { t } = useTranslation();
     const { giftName, reason, estimatedPrice } = recommendation;
 
     // 为每个卡片分配不同的颜色主题
@@ -58,7 +60,7 @@ export default function RecommendationCard({ recommendation, index }: Recommenda
             <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                 <div className="flex items-center space-x-2">
                     <div className="text-2xl">🎁</div>
-                    <span className="text-sm text-gray-500">精心推荐</span>
+                    <span className="text-sm text-gray-500">{t('results.card.recommended')}</span>
                 </div>
                 <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${currentColorTheme}`}></div>
             </div>

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { ClipboardDocumentIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface BlessingDisplayProps {
     blessing: string;
 }
 
 export default function BlessingDisplay({ blessing }: BlessingDisplayProps) {
+    const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async () => {
@@ -29,10 +31,10 @@ export default function BlessingDisplay({ blessing }: BlessingDisplayProps) {
             {/* 标题 */}
             <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                    专属生日祝福语 💝
+                    {t('results.blessing.title')}
                 </h3>
                 <p className="text-gray-600 text-sm">
-                    为这份特别的礼物配上温馨的祝福
+                    {t('results.blessing.subtitle')}
                 </p>
             </div>
 
@@ -40,7 +42,7 @@ export default function BlessingDisplay({ blessing }: BlessingDisplayProps) {
             <div className="relative z-10 mb-6">
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-yellow-100">
                     <p className="text-lg md:text-xl text-gray-800 leading-relaxed font-medium">
-                        "{blessing}"
+                        &ldquo;{blessing}&rdquo;
                     </p>
                 </div>
             </div>
@@ -60,12 +62,12 @@ export default function BlessingDisplay({ blessing }: BlessingDisplayProps) {
                     {copied ? (
                         <>
                             <CheckIcon className="w-5 h-5" />
-                            <span>已复制</span>
+                            <span>{t('results.blessing.copied')}</span>
                         </>
                     ) : (
                         <>
                             <ClipboardDocumentIcon className="w-5 h-5" />
-                            <span>复制祝福语</span>
+                            <span>{t('results.blessing.copy')}</span>
                         </>
                     )}
                 </button>
@@ -73,7 +75,7 @@ export default function BlessingDisplay({ blessing }: BlessingDisplayProps) {
 
             {/* 使用提示 */}
             <div className="mt-6 text-sm text-gray-500">
-                <p>💌 你可以将这句祝福语写在贺卡上，或者发送给收礼人</p>
+                <p>{t('results.blessing.usage')}</p>
             </div>
 
             {/* 装饰性边框 */}

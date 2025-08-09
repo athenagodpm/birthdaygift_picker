@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +27,17 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased language-transition`}
       >
-        {children}
+        <LanguageProvider>
+          {/* 语言切换器 - 固定在右上角 */}
+          <div className="fixed top-3 right-3 md:top-4 md:right-4 z-50">
+            <LanguageSwitcher />
+          </div>
+          <div className="text-adaptive">
+            {children}
+          </div>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -7,9 +7,10 @@ interface MBTICardProps {
     isSelected: boolean;
     onClick: () => void;
     disabled?: boolean;
+    description?: string;
 }
 
-export default function MBTICard({ option, isSelected, onClick, disabled = false }: MBTICardProps) {
+export default function MBTICard({ option, isSelected, onClick, disabled = false, description }: MBTICardProps) {
     const visualConfig = MBTI_VISUAL_CONFIG[option.value as keyof typeof MBTI_VISUAL_CONFIG];
 
     // 颜色主题映射 - 只保留四种颜色
@@ -36,6 +37,7 @@ export default function MBTICard({ option, isSelected, onClick, disabled = false
             type="button"
             onClick={onClick}
             disabled={disabled}
+            title={description || option.description} // 添加tooltip显示翻译描述
             className={`
                 relative p-3 border-2 rounded-lg transition-all duration-300 text-center w-full
                 ${disabled

@@ -1,10 +1,11 @@
 import { GiftRequest, GiftResponse } from '@/types';
 import { FastResponseProcessor } from './fastResponseProcessor';
+import { MultilingualPromptService, Language } from './multilingualPromptService';
 
 export class FastDoubaoService {
     private static readonly BASE_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions';
 
-    static async generateGiftRecommendations(request: GiftRequest): Promise<GiftResponse> {
+    static async generateGiftRecommendations(request: GiftRequest, language: Language = 'zh'): Promise<GiftResponse> {
         try {
             // 检查配置
             if (!process.env.ARK_API_KEY || !process.env.DOUBAO_MODEL_NAME) {
@@ -14,58 +15,9 @@ export class FastDoubaoService {
             console.log('🔥 快速豆包服务启动...');
             const startTime = Date.now();
 
-            // 构建增强prompt
-            const { gender, age, interests, budget, birthdayDate, mbti } = request;
-
-            // 生日季节分析
-            let seasonInfo = '';
-            if (birthdayDate) {
-                const [month] = birthdayDate.split('-').map(Number);
-                if (month >= 3 && month <= 5) seasonInfo = '春季生日，适合清新温暖的礼物';
-                else if (month >= 6 && month <= 8) seasonInfo = '夏季生日，适合清爽实用的礼物';
-                else if (month >= 9 && month <= 11) seasonInfo = '秋季生日，适合温馨舒适的礼物';
-                else seasonInfo = '冬季生日，适合保暖温暖的礼物';
-            }
-
-            // MBTI性格特征
-            const mbtiTraits: Record<string, string> = {
-                'INTJ': '理性独立，喜欢有深度的礼物',
-                'INTP': '好奇探索，喜欢创新有趣的礼物',
-                'ENTJ': '高效领导，喜欢实用高品质的礼物',
-                'ENTP': '创意热情，喜欢新奇有挑战的礼物',
-                'INFJ': '理想温暖，喜欢有意义的礼物',
-                'INFP': '个性创意，喜欢独特艺术的礼物',
-                'ENFJ': '关爱他人，喜欢能分享的礼物',
-                'ENFP': '热情灵感，喜欢有趣体验的礼物',
-                'ISTJ': '实用稳重，喜欢经典实用的礼物',
-                'ISFJ': '贴心温暖，喜欢实用温馨的礼物',
-                'ESTJ': '高效管理，喜欢提升效率的礼物',
-                'ESFJ': '和谐合作，喜欢温馨实用的礼物',
-                'ISTP': '实用探索，喜欢工具技术的礼物',
-                'ISFP': '艺术灵活，喜欢美观个性的礼物',
-                'ESTP': '行动活力，喜欢运动体验的礼物',
-                'ESFP': '热情社交，喜欢有趣互动的礼物'
-            };
-
-            const mbtiInfo = mbti && mbtiTraits[mbti] ? `性格：${mbti}(${mbtiTraits[mbti]})` : '';
-
-            const prompt = `为${age}岁${gender === 'male' ? '男性' : '女性'}推荐3个生日礼物：
-兴趣：${interests.slice(0, 2).join('、') || '无'}
-预算：${budget}
-${seasonInfo ? `时节：${seasonInfo}` : ''}
-${mbtiInfo}
-
-要求：结合季节和性格特征，给出推荐理由（60字内），和用心的祝福语（60字内）
-
-返回JSON：
-{
-  "recommendations": [
-    {"giftName": "礼物名", "reason": "理由", "estimatedPrice": "${budget}"},
-    {"giftName": "礼物名", "reason": "理由", "estimatedPrice": "${budget}"},
-    {"giftName": "礼物名", "reason": "理由", "estimatedPrice": "${budget}"}
-  ],
-  "blessing": "简短祝福"
-}`;
+            // 使用多语言提示词服务
+            const systemPrompt = MultilingualPromptService.getSystemPrompt(language);
+            const userPrompt = MultilingualPromptService.buildUserPrompt(request, language);
 
             // 调用豆包API
             const response = await fetch(this.BASE_URL, {
@@ -77,8 +29,8 @@ ${mbtiInfo}
                 body: JSON.stringify({
                     model: process.env.DOUBAO_MODEL_NAME,
                     messages: [
-                        { role: "system", content: "你是生日礼物推荐专家，很会根据不同的用户推荐最适合他们的礼物，直接返回JSON格式结果。" },
-                        { role: "user", content: prompt }
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: userPrompt }
                     ],
                     temperature: 0.7,
                     max_tokens: 800,
