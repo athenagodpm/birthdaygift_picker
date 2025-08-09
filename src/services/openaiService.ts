@@ -3,10 +3,21 @@ import { GiftRequest, GiftResponse } from '@/types';
 import { PromptService } from './promptService';
 import { ResponseProcessor } from './responseProcessor';
 
-// 初始化OpenAI客户端
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+// OpenAI客户端将在需要时初始化
+let openai: OpenAI | null = null;
+
+// 获取或初始化OpenAI客户端
+function getOpenAIClient(): OpenAI {
+    if (!openai) {
+        if (!process.env.OPENAI_API_KEY) {
+            throw new Error('OpenAI API密钥未配置');
+        }
+        openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY,
+        });
+    }
+    return openai;
+}
 
 export class OpenAIService {
     static async generateGiftRecommendations(request: GiftRequest): Promise<GiftResponse> {
@@ -21,7 +32,8 @@ export class OpenAIService {
 
             console.log('Calling OpenAI API...');
 
-            const completion = await openai.chat.completions.create({
+            const client = getOpenAIClient();
+            const completion = await client.chat.completions.create({
                 model: "gpt-4o-mini", // 使用更经济的模型
                 messages: [
                     {
@@ -96,7 +108,8 @@ export class OpenAIService {
                 return false;
             }
 
-            const completion = await openai.chat.completions.create({
+            const client = getOpenAIClient();
+            const completion = await client.chat.completions.create({
                 model: "gpt-4o-mini",
                 messages: [{ role: "user", content: "Hello" }],
                 max_tokens: 5
